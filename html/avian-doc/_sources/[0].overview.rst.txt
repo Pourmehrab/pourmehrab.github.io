@@ -1,0 +1,114 @@
+Overview
+============
+
+Introduction
+___________
+The program is to simulate the performance of an isolated intersection under traffic of automated vehicles and
+conventional vehicles with variety of signal control methods. It is developed as part of the AVIAN project supported by
+National Science Foundation under `grant award 1446813 <https://www.nsf.gov/awardsearch/showAward?AWD_ID=1446813&HistoricalAwards=false>`_.
+
+Coded by: Mahmoud Pourmehrab (mpourmehrab@ufl.edu)
+
+Visit the project website `here <http://avian.essie.ufl.edu>`_
+
+
+   .. note::
+      - The Python requirement is set to ``3.5.2``
+      - Install packages using ``pip3 install -r requirements.txt``
+      - SI units used (speed in :math:`m/s`, length in :math:`m`, time in :math:`s`, acceleration in :math:`m/s^2`)
+      - Run ``python main <intersection_name> <optimization_algo> <run mode>``
+      - The printed information in the command line may have the following prefixes:
+         - ``>>>`` phase addition to the end of SPaT
+         - ``<<<`` phase removal to the beginning of SPaT
+         - ``>->`` phase extension (only can happen to the last phase)
+         - ``\\\`` vehicle addition
+         - ``///`` vehicle removal
+         - ``>@>`` vehicle departure scheduled
+
+      - Outputs are stored under ``\log``:
+         * ``<intersection name>_vehicle_level`` includes input csv plus the ``departure time, vehicle ID`` and ``elapsed time`` columns
+         * ``<intersection name>_trj_point_level.csv`` includes the trajectory points
+
+   .. warning::
+      - As of now, no traffic generator module is developed as part of the main workflow. The traffic is input in csv format under ``data`` directory.
+      - For simulation, the directory ``\data\`` shall include ``<intersection name>.csv`` which has the scenarios to be tested. Note the filename should match the intersection name.
+      - The csv file must include columns with the following heading:
+         - `lane`: lane index (one-based)
+         - `type`: vehicle type {0: CNV, 1: CAV}
+         - `arrival time`: arrival time at the stop bar measured in second from a fix reference point
+         - `curSpd`: detection speed
+         - `dist`: detection distance
+         - `desSpd`: desired speed
+         - `dest`: destination {0: right turn, 1: through, 2: left}
+         - `L`: length of vehicle
+         - `maxDec`: maximum deceleration rate vehicle can execute
+         - `maxAcc`: maximum acceleration rate vehicle can execute
+         
+
+
+
+You can add any intersection in the ``src/intersection/data.py``. The list of all available intersections is:
+   * ``reserv``
+   * ``13th16th``
+
+You also can choose from the following signal control methods:
+   * ``GA``
+   * ``pretimed``
+   * ``MCF``      (under development)
+   * ``actuated`` (under development)
+
+You can run in either of the following modes (*pay attention to the requirements of each run mode*):
+   * ``simulation``
+   * ``realtime``
+
+For example, to simulate intersection of 13th and 16th in Gainesville with GA, invoke:
+
+   >>> python 13th16th GA simulation
+
+
+The **UML diagram** of the project is as the following (*you may want to zoom in*):
+
+.. image:: images/UML.JPG
+
+
+Terms
+___________
+
+.. glossary::
+
+   AVIAN
+      Autonomous Vehicles at Intelligent intersections and Advanced Networks
+
+   SPaT
+      Signal Phase and Timing
+
+   CAV
+      Connected and Automated Vehicle
+
+   CNV
+      Conventional Vehicle
+
+   Trajectory
+      A list of triples (time stamp, distance to stop bar, speed) to describe a vehicle's movement
+
+   Gipps CF
+      A car following model developed by Gipps 1981 that models conventional vehicles movement
+
+   GA
+      Genetic Algorithm to optimize SPaTs decision
+
+   badness
+      In the context of GA, badness defines as the negative of fitness of an individual where less is preferred.
+
+   MCF
+      Minimum Cost Flow model to optimize SPaTs decision
+
+
+
+
+Main Script
+___________
+The ``main.py`` file implements the following work flow:
+
+.. automodule:: main
+   :members:

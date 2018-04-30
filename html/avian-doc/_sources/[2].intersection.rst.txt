@@ -1,0 +1,10 @@
+Intersection
+============
+
+.. automodule:: src.intersection
+   :members:
+   :inherited-members:
+   :show-inheritance:
+   :private-members:
+   :undoc-members:
+   :special-members: __init__
