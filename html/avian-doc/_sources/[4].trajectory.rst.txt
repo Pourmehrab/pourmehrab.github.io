@@ -1,5 +1,0 @@
-Trajectory
-============
-
-.. automodule:: src.trajectory
-   :members:
